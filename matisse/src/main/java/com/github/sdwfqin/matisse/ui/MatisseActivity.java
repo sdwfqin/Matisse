@@ -26,7 +26,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -55,10 +54,9 @@ import com.github.sdwfqin.matisse.internal.ui.widget.AlbumsSpinner;
 import com.github.sdwfqin.matisse.internal.ui.widget.CheckRadioView;
 import com.github.sdwfqin.matisse.internal.ui.widget.IncapableDialog;
 import com.github.sdwfqin.matisse.internal.utils.MediaStoreCompat;
-import com.github.sdwfqin.matisse.internal.utils.PathUtils;
 import com.github.sdwfqin.matisse.internal.utils.PhotoMetadataUtils;
-import com.github.sdwfqin.matisse.internal.utils.SingleMediaScanner;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -72,7 +70,6 @@ public class MatisseActivity extends AppCompatActivity implements
         AlbumMediaAdapter.OnPhotoCapture {
 
     public static final String EXTRA_RESULT_SELECTION = "extra_result_selection";
-    public static final String EXTRA_RESULT_SELECTION_PATH = "extra_result_selection_path";
     public static final String EXTRA_RESULT_ORIGINAL_ENABLE = "extra_result_original_enable";
     public static final String CHECK_STATE = "checkState";
     private static final int REQUEST_CODE_PREVIEW = 23;
@@ -203,15 +200,12 @@ public class MatisseActivity extends AppCompatActivity implements
             if (data.getBooleanExtra(BasePreviewActivity.EXTRA_RESULT_APPLY, false)) {
                 Intent result = new Intent();
                 ArrayList<Uri> selectedUris = new ArrayList<>();
-                ArrayList<String> selectedPaths = new ArrayList<>();
                 if (selected != null) {
                     for (Item item : selected) {
                         selectedUris.add(item.getContentUri());
-                        selectedPaths.add(PathUtils.getPath(this, item.getContentUri()));
                     }
                 }
                 result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
-                result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
                 result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
                 setResult(RESULT_OK, result);
                 finish();
@@ -227,26 +221,22 @@ public class MatisseActivity extends AppCompatActivity implements
         } else if (requestCode == REQUEST_CODE_CAPTURE) {
             // Just pass the data back to previous calling Activity.
             Uri contentUri = mMediaStoreCompat.getCurrentPhotoUri();
-            String path = mMediaStoreCompat.getCurrentPhotoPath();
             ArrayList<Uri> selected = new ArrayList<>();
             selected.add(contentUri);
-            ArrayList<String> selectedPath = new ArrayList<>();
-            selectedPath.add(path);
             Intent result = new Intent();
             result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selected);
-            result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPath);
             setResult(RESULT_OK, result);
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 MatisseActivity.this.revokeUriPermission(contentUri,
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
 
-            new SingleMediaScanner(this.getApplicationContext(), path, new SingleMediaScanner.ScanListener() {
-                @Override
-                public void onScanFinish() {
-                    Log.i("SingleMediaScanner", "scan finish!");
-                }
-            });
+            // 通知相册刷新
+            // https://developer.android.google.cn/training/camera/photobasics#TaskGallery
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            File f = new File(mMediaStoreCompat.getCurrentPhotoPath());
+            mediaScanIntent.setData(Uri.fromFile(f));
+            this.sendBroadcast(mediaScanIntent);
             finish();
         }
     }
@@ -324,8 +314,6 @@ public class MatisseActivity extends AppCompatActivity implements
             Intent result = new Intent();
             ArrayList<Uri> selectedUris = (ArrayList<Uri>) mSelectedCollection.asListOfUri();
             result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
-            ArrayList<String> selectedPaths = (ArrayList<String>) mSelectedCollection.asListOfString();
-            result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
             result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
             setResult(RESULT_OK, result);
             finish();
@@ -412,7 +400,7 @@ public class MatisseActivity extends AppCompatActivity implements
 
         if (mSpec.onSelectedListener != null) {
             mSpec.onSelectedListener.onSelected(
-                    mSelectedCollection.asListOfUri(), mSelectedCollection.asListOfString());
+                    mSelectedCollection.asListOfUri());
         }
     }
 

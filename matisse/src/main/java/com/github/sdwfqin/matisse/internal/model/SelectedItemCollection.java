@@ -20,10 +20,11 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.core.graphics.PathUtils;
+
 import com.github.sdwfqin.matisse.internal.entity.IncapableCause;
 import com.github.sdwfqin.matisse.internal.entity.Item;
 import com.github.sdwfqin.matisse.internal.entity.SelectionSpec;
-import com.github.sdwfqin.matisse.internal.utils.PathUtils;
 import com.github.sdwfqin.matisse.internal.utils.PhotoMetadataUtils;
 import com.github.sdwfqin.matisse.R;
 
@@ -149,14 +150,6 @@ public class SelectedItemCollection {
             uris.add(item.getContentUri());
         }
         return uris;
-    }
-
-    public List<String> asListOfString() {
-        List<String> paths = new ArrayList<>();
-        for (Item item : mItems) {
-            paths.add(PathUtils.getPath(mContext, item.getContentUri()));
-        }
-        return paths;
     }
 
     public boolean isEmpty() {

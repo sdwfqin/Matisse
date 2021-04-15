@@ -87,17 +87,6 @@ public final class Matisse {
     }
 
     /**
-     * Obtain user selected media path list in the starting Activity or Fragment.
-     *
-     * @param data Intent passed by {@link Activity#onActivityResult(int, int, Intent)} or
-     *             {@link Fragment#onActivityResult(int, int, Intent)}.
-     * @return User selected media path list.
-     */
-    public static List<String> obtainPathResult(Intent data) {
-        return data.getStringArrayListExtra(MatisseActivity.EXTRA_RESULT_SELECTION_PATH);
-    }
-
-    /**
      * Obtain state whether user decide to use selected media in original
      *
      * @param data Intent passed by {@link Activity#onActivityResult(int, int, Intent)} or
@@ -128,9 +117,8 @@ public final class Matisse {
      * Types not included in the set will still be shown in the grid but can't be chosen.
      *
      * @param mimeTypes          MIME types set user can choose from.
-     * @param mediaTypeExclusive Whether can choose images and videos at the same time during one single choosing
-     *                           process. true corresponds to not being able to choose images and videos at the same
-     *                           time, and false corresponds to being able to do this.
+     * @param mediaTypeExclusive 在一次选择过程中，是否可以同时选择图像和视频。
+     *                           true表示不能同时选择图像和视频，false表示可以同时选择图像和视频。
      * @return {@link SelectionCreator} to build select specifications.
      * @see MimeType
      * @see SelectionCreator

@@ -138,7 +138,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
                 if (mSpec.onSelectedListener != null) {
                     mSpec.onSelectedListener.onSelected(
-                            mSelectedCollection.asListOfUri(), mSelectedCollection.asListOfString());
+                            mSelectedCollection.asListOfUri());
                 }
             }
         });

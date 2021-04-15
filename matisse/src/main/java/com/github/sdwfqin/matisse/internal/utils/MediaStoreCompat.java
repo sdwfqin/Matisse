@@ -74,7 +74,8 @@ public class MediaStoreCompat {
 
     public void dispatchCaptureIntent(Context context, int requestCode) {
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (captureIntent.resolveActivity(context.getPackageManager()) != null) {
+        // 检查相机是否可用
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             File photoFile = null;
             try {
                 photoFile = createImageFile();

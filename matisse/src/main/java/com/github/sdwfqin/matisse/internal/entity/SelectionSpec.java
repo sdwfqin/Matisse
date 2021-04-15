@@ -21,31 +21,50 @@ import android.content.pm.ActivityInfo;
 import androidx.annotation.StyleRes;
 
 import com.github.sdwfqin.matisse.MimeType;
+import com.github.sdwfqin.matisse.R;
 import com.github.sdwfqin.matisse.engine.ImageEngine;
 import com.github.sdwfqin.matisse.engine.impl.GlideEngine;
 import com.github.sdwfqin.matisse.filter.Filter;
 import com.github.sdwfqin.matisse.listener.OnCheckedListener;
 import com.github.sdwfqin.matisse.listener.OnSelectedListener;
 
-import com.github.sdwfqin.matisse.R;
-
 import java.util.List;
 import java.util.Set;
 
 public final class SelectionSpec {
 
+    /**
+     * 可选择的类型
+     */
     public Set<MimeType> mimeTypeSet;
+    /**
+     * 在一次选择过程中，是否可以同时选择图像和视频。
+     * true表示不能同时选择图像和视频，false表示可以同时选择图像和视频。
+     */
     public boolean mediaTypeExclusive;
     public boolean showSingleMediaType;
     @StyleRes
     public int themeId;
+    /**
+     * 屏幕方向
+     */
     public int orientation;
+    /**
+     * 当用户选择媒体时，显示一个自动增加的数字或一个复选标记。
+     * 对于从1开始自动递增的数字，则为true；对于复选标记，为false。默认值为false。
+     */
     public boolean countable;
     public int maxSelectable;
     public int maxImageSelectable;
     public int maxVideoSelectable;
     public List<Filter> filters;
+    /**
+     * 是否开启启用照片捕获。
+     */
     public boolean capture;
+    /**
+     * 拍照的FileProvider权限
+     */
     public CaptureStrategy captureStrategy;
     public int spanCount;
     public int gridExpectedSize;
@@ -53,6 +72,9 @@ public final class SelectionSpec {
     public ImageEngine imageEngine;
     public boolean hasInited;
     public OnSelectedListener onSelectedListener;
+    /**
+     * 原图选项
+     */
     public boolean originalable;
     public boolean autoHideToobar;
     public int originalMaxSize;

@@ -82,9 +82,9 @@ public final class SelectionCreator {
     }
 
     /**
-     * Whether to show only one media type if choosing medias are only images or videos.
+     * 如果选择的媒体仅是图像或视频，则仅显示一种媒体类型。
      *
-     * @param showSingleMediaType whether to show only one media type, either images or videos.
+     * @param showSingleMediaType 是否仅显示一种媒体类型，即图像还是视频。
      * @return {@link SelectionCreator} for fluent API.
      * @see SelectionSpec#onlyShowImages()
      * @see SelectionSpec#onlyShowVideos()
@@ -111,10 +111,9 @@ public final class SelectionCreator {
     }
 
     /**
-     * Show a auto-increased number or a check mark when user select media.
+     * 当用户选择媒体时，显示一个自动增加的数字或一个复选标记。
      *
-     * @param countable true for a auto-increased number from 1, false for a check mark. Default
-     *                  value is false.
+     * @param countable 对于从1开始自动递增的数字，则为true；对于复选标记，为false。默认值为false。
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator countable(boolean countable) {
@@ -173,7 +172,7 @@ public final class SelectionCreator {
     }
 
     /**
-     * Determines whether the photo capturing is enabled or not on the media grid view.
+     * 是否开启启用照片捕获。
      * <p>
      * If this value is set true, photo capturing entry will appear only on All Media's page.
      *
@@ -186,7 +185,7 @@ public final class SelectionCreator {
     }
 
     /**
-     * Show a original photo check options.Let users decide whether use original photo after select
+     * 显示原始照片检查选项。让用户决定选择后是否使用原始照片（原图选项）
      *
      * @param enable Whether to enable original photo or not
      * @return {@link SelectionCreator} for fluent API.
@@ -197,7 +196,7 @@ public final class SelectionCreator {
     }
 
     /**
-     * Determines Whether to hide top and bottom toolbar in PreView mode ,when user tap the picture
+     * 用户单击图片时是否在“预览”模式下隐藏顶部和底部工具栏
      *
      * @param enable
      * @return {@link SelectionCreator} for fluent API.
@@ -208,7 +207,7 @@ public final class SelectionCreator {
     }
 
     /**
-     * Maximum original size,the unit is MB. Only useful when {link@originalEnable} set true
+     * 原图大小上限，单位Mb，只有在originalEnable=true时生效
      *
      * @param size Maximum original size. Default value is Integer.MAX_VALUE
      * @return {@link SelectionCreator} for fluent API.
@@ -231,7 +230,7 @@ public final class SelectionCreator {
     }
 
     /**
-     * Set the desired orientation of this activity.
+     * activity屏幕方向
      *
      * @param orientation An orientation constant as used in {@link ScreenOrientation}.
      *                    Default value is {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_PORTRAIT}.
@@ -260,11 +259,10 @@ public final class SelectionCreator {
     }
 
     /**
-     * Set expected size for media grid to adapt to different screen sizes. This won't necessarily
-     * be applied cause the media grid should fill the view container. The measured media grid's
-     * size will be as close to this value as possible.
+     * 设置媒体网格的预期大小以适应不同的屏幕大小。由于媒体网格应填充视图容器，因此不一定会应用此方法。
+     * 所测量的媒体网格的大小将尽可能接近此值。
      *
-     * @param size Expected media grid size in pixel.
+     * @param size 预期的媒体网格大小（以像素为单位）。
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator gridExpectedSize(int size) {
@@ -273,8 +271,7 @@ public final class SelectionCreator {
     }
 
     /**
-     * Photo thumbnail's scale compared to the View's size. It should be a float value in (0.0,
-     * 1.0].
+     * 照片缩略图的比例与视图的尺寸相比。它应该是[0.0，1.0]中的浮点值。
      *
      * @param scale Thumbnail's scale in (0.0, 1.0]. Default value is 0.5.
      * @return {@link SelectionCreator} for fluent API.
@@ -288,7 +285,7 @@ public final class SelectionCreator {
     }
 
     /**
-     * Provide an image engine.
+     * 图像展示引擎
      * <p>
      * There are two built-in image engines:
      * 1. {@link GlideEngine}

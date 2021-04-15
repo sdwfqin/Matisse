@@ -16,5 +16,8 @@
 <paths>
     <external-path
         name="my_images"
+        path="Android/data/com.github.sdwfqin.matisse.sample/files/Pictures" />
+    <external-path
+        name="images"
         path="Pictures" />
 </paths>

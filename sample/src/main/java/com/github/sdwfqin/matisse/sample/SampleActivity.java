@@ -61,7 +61,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         recyclerView.setAdapter(mAdapter = new UriAdapter());
     }
 
-    // <editor-fold defaultstate="collapsed" desc="onClick">
     @SuppressLint("CheckResult")
     @Override
     public void onClick(final View v) {
@@ -76,7 +75,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 }, Throwable::printStackTrace);
     }
-    // </editor-fold>
 
     private void startAction(View v) {
         switch (v.getId()) {
@@ -86,7 +84,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                         .countable(true)
                         .capture(true)
                         .captureStrategy(
-                                new CaptureStrategy(true, "com.github.sdwfqin.matisse.sample.fileprovider", "test"))
+                                new CaptureStrategy(true, "com.github.sdwfqin.matisse.sample.fileprovider", "matisse"))
                         .maxSelectable(9)
                         .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
                         .gridExpectedSize(
@@ -94,8 +92,8 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                         .thumbnailScale(0.85f)
                         .imageEngine(new GlideEngine())
-                        .setOnSelectedListener((uriList, pathList) -> {
-                            Log.e("onSelected", "onSelected: pathList=" + pathList);
+                        .setOnSelectedListener((uriList) -> {
+                            Log.e("onSelected", "onSelected: uriList=" + uriList);
                         })
                         .showSingleMediaType(true)
                         .originalEnable(true)
@@ -139,14 +137,14 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
             default:
                 break;
         }
-        mAdapter.setData(null, null);
+        mAdapter.setData(null);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
+            mAdapter.setData(Matisse.obtainResult(data));
             Log.e("OnActivityResult ", String.valueOf(Matisse.obtainOriginalState(data)));
         }
     }
@@ -154,11 +152,9 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     private static class UriAdapter extends RecyclerView.Adapter<UriAdapter.UriViewHolder> {
 
         private List<Uri> mUris;
-        private List<String> mPaths;
 
-        void setData(List<Uri> uris, List<String> paths) {
+        void setData(List<Uri> uris) {
             mUris = uris;
-            mPaths = paths;
             notifyDataSetChanged();
         }
 
@@ -171,10 +167,8 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public void onBindViewHolder(UriViewHolder holder, int position) {
             holder.mUri.setText(mUris.get(position).toString());
-            holder.mPath.setText(mPaths.get(position));
 
             holder.mUri.setAlpha(position % 2 == 0 ? 1.0f : 0.54f);
-            holder.mPath.setAlpha(position % 2 == 0 ? 1.0f : 0.54f);
         }
 
         @Override
@@ -185,12 +179,10 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         static class UriViewHolder extends RecyclerView.ViewHolder {
 
             private TextView mUri;
-            private TextView mPath;
 
             UriViewHolder(View contentView) {
                 super(contentView);
                 mUri = (TextView) contentView.findViewById(R.id.uri);
-                mPath = (TextView) contentView.findViewById(R.id.path);
             }
         }
     }
